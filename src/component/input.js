@@ -1,10 +1,10 @@
 
     import React from 'react';
     import clsx from 'clsx';
-    import { makeStyles } from '@material-ui/core/styles';
     import MenuItem from '@material-ui/core/MenuItem';
     import TextField from '@material-ui/core/TextField';
     
+    import { makeStyles } from '@material-ui/core/styles';
     const useStyles = makeStyles(theme => ({
       container: {
         display: 'flex',
@@ -41,7 +41,6 @@
         label: '¥',
       },
     ];
-    
     export default function TextFields(props) {
       const classes = useStyles();
       return (
@@ -52,6 +51,7 @@
             className={classes.textField}
             margin="normal"
             type = {props.name}
+            name = {props.name}
             onChange = {(e)=>props.onchange(e)}
           />
           </form>

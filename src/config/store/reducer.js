@@ -1,23 +1,22 @@
+// Initial State
+
 let InitialState = {
-    name  :''
+    allData : [],
 }
 
-
-let reducer = (state = InitialState,action)=> {
-
-switch(action.type){
-    case "Qayoom" :
-        return {
-            state
-        }
-
-   default :
-   return {
-       state
-   }
-
+// Reducer Function
+let reducer = (state = InitialState, action) => {
+    console.log(action.type)
+    switch (action.type) {
+           case "value":
+            state.state.allData.push(action.value)
+            return {
+               ...state, allData: state.state.allData
+            }
+        default:
+            return {
+                state : state
+            }
+    }
 }
-
-}
-
 export default reducer

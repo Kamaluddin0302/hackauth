@@ -1,8 +1,12 @@
 import React from 'react'
 import Input from './../../component/input'
 import Button from './../../component/button'
-
+import {
+    // SignupFunc,
+    LoginFun} from './../../config/store/action'
 import firebase from './../../config/firebase/firebase'
+import {connect} from 'react-redux'
+import Modal from './../../component/model/model'
 
 class Signup extends React.Component {
 constructor(){
@@ -10,70 +14,65 @@ constructor(){
     this.state = {
 email : "",
 password: "",
+model : false
     }
 }
 GetData = (data)=> {
 this.setState({
-[data.target.type] : data.target.value
+[data.target.name] : data.target.value
 })
 }
 
 
-SetValue = ()=> {
-    let {email ,password} = this.state
+// SetValue = async()=> {
+//    this.setState({
+//        model : true
+//    })
+//     await this.props.SignupFunc(this.state)
+//    await console.log("SignUp Successfully")
+   
 
-    console.log(email)
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((res)=>{
-        console.log(res)
-        firebase.firestore().collection("User").doc(res.user.uid).set(this.state)
-        .then(()=> {
-            this.props.history.push("/Login")
-        })
-        
+// }
 
-        })
-    .catch((error)=> {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorMessage)
-        // ...
-      });
+
+
+SetValue = async() => {
+try {
+await this.props.Login(this.state)
+this.props.history.push("/home")
 }
-
-
-
-SetValue = () => {
-        let {email ,password} = this.state
-    firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((res)=> {
-        console.log(res)
-        firebase.database().ref("/").child("Loginuser").child(res.user.uid).set(this.state)
-    })
-    .catch((error)=> {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorMessage)
-        // ...
-      });
+catch(err){
+    console.log(err)
+}
 }
 
 
 
 render(){
-console.log(this.state)
+console.log(this.props.state)
     return(
  <div>
      <Input name = "email" onchange = {this.GetData}/>
      <Input name = "password" onchange = {this.GetData}/>
      <Button onclick = {this.SetValue}/>
- </div>
+   {/* <Modal />  */}
+   </div>
 
     )
 }
 }
 
+let mapStateToProps = (state)=> {
+return {
+    state: state
+}
+}
 
-export default Signup
+let mapDispatchToProps = (dispatch)=> {
+return {
+// SignupFunc : (state)=> dispatch(SignupFunc(state)),
+Login : (state)=> dispatch(LoginFun(state))
+}
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Signup)
